@@ -3,14 +3,14 @@ import random
 class сhess:
     def __init__(gg):
         gg.board = [
-            [".", "n", "g", "q", "k", "g", "n", "r"],
-            ["p", "p", "p", "p", "p", "p", "p", "p"],
+            [".", ".", ".", ".", "k", ".", ".", "."],
             [".", ".", ".", ".", ".", ".", ".", "."],
             [".", ".", ".", ".", ".", ".", ".", "."],
+            [".", ".", ".", ".", "q", ".", ".", "."],
             [".", ".", ".", ".", ".", ".", ".", "."],
             [".", ".", ".", ".", ".", ".", ".", "."],
-            ["P", "P", "P", "P", "P", "P", "P", "P"],
-            ["R", "N", "G", "Q", "K", "G", "N", "."]
+            ["P", ".", ".", ".", ".", ".", ".", "."],
+            [".", ".", ".", ".", "K", ".", ".", "."]
         ]
         gg.turn = "white"
 
@@ -36,7 +36,7 @@ class сhess:
             if er == sr - 1 and abs(ec - sc) == 1 and gg.board[er][ec].islower() and gg.board[er][ec].islower() != 'r':
                 return True
             if er == 0 and gg.board[er][ec] == ".":
-                which_piece = str(input("The black pawn in the end of the board, choose the piece you want to become (Q, G, N): "))
+                which_piece = str(input("The white pawn in the end of the board, choose the piece you want to become (Q, G, N): "))
                 if which_piece == 'Q':
                     gg.board[er][ec] = 'Q'
                 elif which_piece == 'G':
@@ -160,7 +160,6 @@ class сhess:
 
     def make_move(gg, sr, sc, er, ec):
         piece = gg.board[sr][sc]
-        original_piece = gg.board[er][ec]
         gg.board[er][ec] = piece
         gg.board[sr][sc] = "."
         return True
@@ -186,22 +185,19 @@ class сhess:
         elif piece.lower() == "g":
             if gg.move_goose(sr, sc, er, ec):
                 return True
-        return False
+        return False     
 
-    
-    def checkmate_check(gg, turn):
-        if turn == 'white':
-            for i in range(8):
-                for j in range(8):
-                    if gg.board[i][j] == 'P':
-                        return True
+    def check_king_alive(gg, turn):
         if turn == 'black':
             for i in range(8):
-                for j in range(8):
-                    if gg.board[i][j] == 'p':
-                        return True
-        return False
-                
+                if 'k' in gg.board[i]:
+                    return True
+            return False
+        if turn == 'white':
+            for i in range(8):
+                if 'K' in gg.board[i]:
+                    return True
+            return False
 
     def play_game(gg):
         game_count = 0
@@ -209,6 +205,13 @@ class сhess:
             gg.display_board()
             print(f"Turn {gg.turn}")
             print(f"Game moves - {game_count}")
+            if gg.check_king_alive(gg.turn) == False:
+                print("CHECKMATE!!!!!!!!")
+                if gg.turn == 'white':
+                    print("Black win!")
+                else:
+                    print("white win!")
+                break
             move = input("type a notation (e2 e4): ")
             if len(move.split()) != 2:
                 print("Incorrect move, type like this - 'e2 e4'.")
@@ -223,11 +226,6 @@ class сhess:
                 game_count += 1
             else:
                 print("Incorrect move, try again:")
-            if gg.checkmate_check(gg.turn) == False:
-                print(f"{gg.turn} lose!")
-                break
-            else:
-                continue
 
 x = сhess()
 x.play_game()
