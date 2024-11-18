@@ -3,14 +3,14 @@ import random
 class сhess:
     def __init__(gg):
         gg.board = [
-            [".", ".", ".", ".", "k", ".", ".", "."],
+            [".", "n", "g", "q", "k", "g", "n", "r"],
+            ["p", "p", "p", "p", "p", "p", "p", "p"],
             [".", ".", ".", ".", ".", ".", ".", "."],
             [".", ".", ".", ".", ".", ".", ".", "."],
-            [".", ".", ".", ".", "q", ".", ".", "."],
             [".", ".", ".", ".", ".", ".", ".", "."],
             [".", ".", ".", ".", ".", ".", ".", "."],
-            ["P", ".", ".", ".", ".", ".", ".", "."],
-            [".", ".", ".", ".", "K", ".", ".", "."]
+            ["P", "P", "P", "P", "P", "P", "P", "P"],
+            ["R", "N", "G", "Q", "K", "G", "N", "."]
         ]
         gg.turn = "white"
 
@@ -188,12 +188,12 @@ class сhess:
         return False     
 
     def check_king_alive(gg, turn):
-        if turn == 'black':
+        if turn == 'white':
             for i in range(8):
                 if 'k' in gg.board[i]:
                     return True
             return False
-        if turn == 'white':
+        if turn == 'black':
             for i in range(8):
                 if 'K' in gg.board[i]:
                     return True
@@ -202,16 +202,12 @@ class сhess:
     def play_game(gg):
         game_count = 0
         while True:
+            if gg.check_king_alive(gg.turn) == False:
+                print(f"{gg.turn} win!")
+                break
             gg.display_board()
             print(f"Turn {gg.turn}")
             print(f"Game moves - {game_count}")
-            if gg.check_king_alive(gg.turn) == False:
-                print("CHECKMATE!!!!!!!!")
-                if gg.turn == 'white':
-                    print("Black win!")
-                else:
-                    print("white win!")
-                break
             move = input("type a notation (e2 e4): ")
             if len(move.split()) != 2:
                 print("Incorrect move, type like this - 'e2 e4'.")
